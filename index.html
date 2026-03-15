@@ -497,6 +497,7 @@ body{
   flex-direction:column;
   gap:13px;
   -webkit-overflow-scrolling:touch;
+  scroll-behavior:smooth;
 }
     .systemMsg{
       align-self:center;
@@ -1576,10 +1577,13 @@ body{
       setTimeout(() => autoWarmReaction(item.id, text), randomDelay(2800, 4200));
     }
 
-    function scrollBottom(){
-      messages.scrollTop = messages.scrollHeight;
-    }
-
+   function scrollBottom(){
+  messages.scrollTop = messages.scrollHeight;
+  window.scrollTo({
+    top: document.body.scrollHeight,
+    behavior: "smooth"
+  });
+}
     function randomDelay(min, max){
       return Math.floor(Math.random() * (max - min + 1)) + min;
     }
@@ -1725,8 +1729,9 @@ body{
         }, 800);
       }
 
-      msgInput.value = "";
-      updateCharCount();
+   msgInput.value = "";
+updateCharCount();
+setTimeout(scrollBottom, 100);
     }
 
     function autoWarmReaction(messageId){
@@ -1897,8 +1902,18 @@ body{
     roomEls.forEach(room => {
       room.addEventListener("click", () => openRoom(room.dataset.room));
     });
+    msgInput.addEventListener("focus", () => {
+  setTimeout(scrollBottom, 300);
+});
 
-    msgInput.addEventListener("input", updateCharCount);
+msgInput.addEventListener("click", () => {
+  setTimeout(scrollBottom, 300);
+});
+
+msgInput.addEventListener("input", () => {
+  updateCharCount();
+  setTimeout(scrollBottom, 100);
+});
 
     msgInput.addEventListener("keydown", (e) => {
       if(e.key === "Enter" && !e.shiftKey){
