@@ -124,7 +124,10 @@ button{
   box-shadow:0 10px 20px rgba(95,60,34,.16);
   transition:transform .15s ease, box-shadow .15s ease;
 }
-button:hover{transform:translateY(-2px) scale(1.02); box-shadow:0 14px 28px rgba(95,60,34,.2)}
+button:hover{
+  transform:translateY(-2px) scale(1.02);
+  box-shadow:0 14px 28px rgba(95,60,34,.2);
+}
 #rooms{
   display:none;
   padding:18px 22px 26px;
@@ -164,7 +167,15 @@ button:hover{transform:translateY(-2px) scale(1.02); box-shadow:0 14px 28px rgba
   padding:10px 8px 12px;
 }
 .chatBearMini{
-  width:56px;height:56px;object-fit:contain;object-position:center bottom;padding:3px;border-radius:18px;border:3px solid #fff8f0;box-shadow:0 8px 18px rgba(0,0,0,.12);background:#f5ede3;
+  width:56px;
+  height:56px;
+  object-fit:contain;
+  object-position:center bottom;
+  padding:3px;
+  border-radius:18px;
+  border:3px solid #fff8f0;
+  box-shadow:0 8px 18px rgba(0,0,0,.12);
+  background:#f5ede3;
 }
 .chatTitle{font-size:26px;color:#61412c}
 .chatDesc{font-size:16px;color:#8c6d56}
@@ -229,7 +240,12 @@ button:hover{transform:translateY(-2px) scale(1.02); box-shadow:0 14px 28px rgba
   background:rgba(47,36,29,.18);
   backdrop-filter:blur(1px);
 }
-.hugBearWrap{position:relative;display:flex;align-items:center;justify-content:center}
+.hugBearWrap{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
 .hugBear{
   width:min(58vw,360px);
   height:min(72vw,460px);
@@ -254,17 +270,33 @@ button:hover{transform:translateY(-2px) scale(1.02); box-shadow:0 14px 28px rgba
 }
 .armL{left:-10px;transform-origin:right center;animation:armL 1.15s infinite alternate}
 .armR{right:-10px;transform-origin:left center;animation:armR 1.15s infinite alternate}
-@keyframes hugBounce{from{transform:scale(1)}to{transform:scale(1.07)}}
-@keyframes armL{from{transform:rotate(8deg)}to{transform:rotate(-26deg)}}
-@keyframes armR{from{transform:rotate(-8deg)}to{transform:rotate(26deg)}}
-@keyframes idle{0%{transform:translateY(0)}50%{transform:translateY(-8px)}100%{transform:translateY(0)}}
+@keyframes hugBounce{
+  from{transform:scale(1)}
+  to{transform:scale(1.07)}
+}
+@keyframes armL{
+  from{transform:rotate(8deg)}
+  to{transform:rotate(-26deg)}
+}
+@keyframes armR{
+  from{transform:rotate(-8deg)}
+  to{transform:rotate(26deg)}
+}
+@keyframes idle{
+  0%{transform:translateY(0)}
+  50%{transform:translateY(-8px)}
+  100%{transform:translateY(0)}
+}
 .heart{
   position:fixed;
   font-size:30px;
   animation:float 2s linear forwards;
   z-index:40;
 }
-@keyframes float{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-180px)}}
+@keyframes float{
+  0%{opacity:1;transform:translateY(0)}
+  100%{opacity:0;transform:translateY(-180px)}
+}
 #notice{
   position:fixed;
   left:50%;
@@ -279,23 +311,46 @@ button:hover{transform:translateY(-2px) scale(1.02); box-shadow:0 14px 28px rgba
   z-index:50;
   font-size:19px;
 }
+#audioWrap{
+  position:absolute;
+  top:18px;
+  right:18px;
+  z-index:5;
+}
+#bgm{
+  width:230px;
+  opacity:.88;
+  filter:sepia(.18) saturate(.9);
+}
 @media (max-width:700px){
   .frame{width:100vw;height:100vh;margin:0;border-radius:0}
   .heroBear{width:72vw;height:82vw}
   .roomName{font-size:24px}
   .msg{font-size:18px}
   .hugBear{width:74vw;height:86vw}
+  #audioWrap{
+    top:12px;
+    right:12px;
+  }
+  #bgm{
+    width:170px;
+  }
 }
 </style>
 </head>
 <body>
 <div class="frame">
-  <audio id="bgm" autoplay loop controls>
-    <source src="cozy_hug_bgm.wav" type="audio/wav">
-  </audio>
+  <div id="audioWrap">
+    <audio id="bgm" autoplay loop controls>
+      <source src="포근한%20음악.mp3" type="audio/mpeg">
+      브라우저가 오디오를 지원하지 않습니다.
+    </audio>
+  </div>
+
   <audio id="pop" preload="auto">
     <source src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_2a1c2f2e4a.mp3" type="audio/mpeg">
   </audio>
+
   <header>따뜻한 포옹</header>
   <div class="sub">따뜻한 조명 아래, 잠깐 쉬어가도 괜찮아요</div>
 
@@ -352,101 +407,123 @@ button:hover{transform:translateY(-2px) scale(1.02); box-shadow:0 14px 28px rgba
     <div class="hugArm armR"></div>
   </div>
 </div>
+
 <div id="notice"></div>
 
 <script>
-const names=["옥수수차","둥글레차","홍차","녹차"];
-let nickname=names[Math.floor(Math.random()*names.length)];
-let currentRoom='친구 방';
-const replies=[
+const names = ["옥수수차","둥글레차","홍차","녹차"];
+let nickname = names[Math.floor(Math.random() * names.length)];
+let currentRoom = '친구 방';
+
+const replies = [
   '괜찮아요. 여기서는 천천히 말해도 돼요.',
   '많이 애썼네요. 잠깐 기대어 쉬어요.',
   '지금 이곳에서는 편안했으면 좋겠어요.',
   '따뜻한 차 한 잔처럼 마음이 조금 풀리면 좋겠어요.'
 ];
-let replyPool=[];
+
+let replyPool = [];
+
 function nextReply(){
-  if(replyPool.length===0){
-    replyPool=[...replies].sort(()=>Math.random()-0.5);
+  if(replyPool.length === 0){
+    replyPool = [...replies].sort(() => Math.random() - 0.5);
   }
   return replyPool.pop();
 }
 
 function sound(){
-  const pop=document.getElementById('pop');
-  pop.currentTime=0;
-  pop.play().catch(()=>{});
+  const pop = document.getElementById('pop');
+  pop.currentTime = 0;
+  pop.play().catch(() => {});
 }
+
 function startBgm(){
-  const bgm=document.getElementById('bgm');
-  bgm.play().catch(()=>{});
+  const bgm = document.getElementById('bgm');
+  bgm.volume = 0.25;
+  bgm.play().catch(() => {});
 }
-document.addEventListener('click', startBgm, {once:true});
+
+document.addEventListener('click', startBgm, { once:true });
 
 function enterRooms(){
   sound();
-  document.getElementById('home').style.display='none';
-  document.getElementById('rooms').style.display='block';
+  document.getElementById('home').style.display = 'none';
+  document.getElementById('rooms').style.display = 'block';
 }
+
 function enterRoom(roomName){
   sound();
-  currentRoom=roomName;
-  document.getElementById('chatTitle').innerText=roomName;
-  document.getElementById('rooms').style.display='none';
-  document.getElementById('chat').style.display='flex';
-  notice(nickname+'님이 '+roomName+'에 들어왔어요.');
+  currentRoom = roomName;
+  document.getElementById('chatTitle').innerText = roomName;
+  document.getElementById('rooms').style.display = 'none';
+  document.getElementById('chat').style.display = 'flex';
+  notice(nickname + '님이 ' + roomName + '에 들어왔어요.');
   seedOtherMessage();
 }
+
 function addMessage(text, who='me', name=nickname){
-  const wrap=document.createElement('div');
-  wrap.className='msgWrap '+(who==='me'?'me':'other');
-  const nick=document.createElement('div');
-  nick.className='nick';
-  nick.innerText=name;
-  const bubble=document.createElement('div');
-  bubble.className='msg';
-  bubble.innerText=text;
+  const wrap = document.createElement('div');
+  wrap.className = 'msgWrap ' + (who === 'me' ? 'me' : 'other');
+
+  const nick = document.createElement('div');
+  nick.className = 'nick';
+  nick.innerText = name;
+
+  const bubble = document.createElement('div');
+  bubble.className = 'msg';
+  bubble.innerText = text;
+
   wrap.appendChild(nick);
   wrap.appendChild(bubble);
+
+  const messages = document.getElementById('messages');
   messages.appendChild(wrap);
-  messages.scrollTop=messages.scrollHeight;
+  messages.scrollTop = messages.scrollHeight;
 }
+
 function sendMsg(){
-  let input=document.getElementById('msg');
-  let text=input.value.trim();
-  if(text==='') return;
+  const input = document.getElementById('msg');
+  const text = input.value.trim();
+  if(text === '') return;
+
   sound();
-  addMessage(text,'me',nickname);
-  input.value='';
+  addMessage(text, 'me', nickname);
+  input.value = '';
   hug();
-  setTimeout(seedOtherMessage,700);
+  setTimeout(seedOtherMessage, 700);
 }
+
 function seedOtherMessage(){
-  const others=['옥수수차','둥글레차','홍차','녹차'].filter(n=>n!==nickname);
-  addMessage(nextReply(),'other',others[Math.floor(Math.random()*others.length)]);
+  const others = ['옥수수차','둥글레차','홍차','녹차'].filter(n => n !== nickname);
+  addMessage(nextReply(), 'other', others[Math.floor(Math.random() * others.length)]);
 }
+
 function hug(){
-  let h=document.getElementById('hug');
-  h.style.display='flex';
-  for(let i=0;i<12;i++){
-    let heart=document.createElement('div');
-    heart.className='heart';
-    heart.innerText='💗';
-    heart.style.left=Math.random()*100+'%';
-    heart.style.bottom='0';
+  const h = document.getElementById('hug');
+  h.style.display = 'flex';
+
+  for(let i = 0; i < 12; i++){
+    const heart = document.createElement('div');
+    heart.className = 'heart';
+    heart.innerText = '💗';
+    heart.style.left = Math.random() * 100 + '%';
+    heart.style.bottom = '0';
     document.body.appendChild(heart);
-    setTimeout(()=>heart.remove(),2000);
+    setTimeout(() => heart.remove(), 2000);
   }
-  setTimeout(()=>h.style.display='none',1500);
+
+  setTimeout(() => h.style.display = 'none', 1500);
 }
+
 function notice(t){
-  let n=document.getElementById('notice');
-  n.innerText=t;
-  n.style.display='block';
-  setTimeout(()=>n.style.display='none',2600);
+  const n = document.getElementById('notice');
+  n.innerText = t;
+  n.style.display = 'block';
+  setTimeout(() => n.style.display = 'none', 2600);
 }
-window.addEventListener('beforeunload',()=>{
-  notice(nickname+'님이 나가셨어요.');
+
+window.addEventListener('beforeunload', () => {
+  notice(nickname + '님이 나가셨어요.');
 });
 </script>
 </body>
