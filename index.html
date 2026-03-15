@@ -19,19 +19,13 @@
       --bg-2:#eadccb;
       --bg-3:#dfc5a8;
       --paper:#fffaf4;
-      --paper-soft:rgba(255,250,244,.84);
       --paper-line:rgba(255,255,255,.56);
       --brown-1:#5c4131;
       --brown-2:#7a5842;
       --brown-3:#9a7458;
-      --accent:#f1d0aa;
-      --accent-2:#e8bf8f;
-      --accent-3:#f8ebdb;
       --line:rgba(117,82,58,.08);
       --shadow:0 18px 42px rgba(96,67,45,.11);
       --shadow-soft:0 10px 24px rgba(96,67,45,.08);
-      --danger:#d88b7c;
-      --good:#dcc09c;
     }
 
     *{ box-sizing:border-box; }
@@ -57,8 +51,6 @@
       background-size:8px 8px;
       mix-blend-mode:multiply;
     }
-
-    a{ color:inherit; text-decoration:none; }
 
     .frame{
       width:min(1160px, 96vw);
@@ -87,21 +79,10 @@
       position:absolute;
       top:18px;
       left:18px;
-      z-index:6;
+      z-index:20;
       display:flex;
       flex-direction:column;
       gap:8px;
-    }
-
-    .leftTopBtn{
-      text-align:left;
-      min-width:120px;
-    }
-
-    .underlinedStrong{
-      text-decoration:underline;
-      text-decoration-thickness:3px;
-      text-underline-offset:4px;
     }
 
     header{
@@ -124,7 +105,7 @@
       z-index:2;
     }
 
-    section{ display:none; }
+    section{ display:none; position:relative; z-index:2; }
     #home{ display:flex; }
 
     #home{
@@ -135,8 +116,6 @@
       text-align:center;
       padding:28px;
       gap:18px;
-      position:relative;
-      z-index:2;
     }
 
     .heroBear{
@@ -177,18 +156,12 @@
       padding:13px 22px;
       box-shadow:0 10px 22px rgba(115,79,52,.13), inset 0 1px 0 rgba(255,255,255,.5);
       transition:transform .18s ease, box-shadow .18s ease, opacity .18s ease;
+      pointer-events:auto;
     }
 
     button:hover{
       transform:translateY(-2px);
       box-shadow:0 14px 28px rgba(115,79,52,.17), inset 0 1px 0 rgba(255,255,255,.5);
-    }
-
-    button:disabled{
-      opacity:.6;
-      cursor:not-allowed;
-      transform:none;
-      box-shadow:0 8px 14px rgba(95,60,34,.07);
     }
 
     .softBtn{
@@ -197,16 +170,20 @@
       padding:10px 15px;
     }
 
-    .dangerBtn{
-      background:linear-gradient(180deg,#f0c2ba,#de8e7f);
-      color:#fffaf5;
+    .leftTopBtn{
+      text-align:left;
+      min-width:120px;
+    }
+
+    .underlinedStrong{
+      text-decoration:underline;
+      text-decoration-thickness:3px;
+      text-underline-offset:4px;
     }
 
     #app{
       min-height:78vh;
       grid-template-columns:320px 1fr;
-      position:relative;
-      z-index:2;
     }
 
     .sidePanel{
@@ -493,12 +470,14 @@
       justify-content:center;
       background:rgba(71,49,37,.22);
       backdrop-filter:blur(5px);
-      z-index:60;
+      z-index:100;
       padding:16px;
     }
 
     .modalCard{
-      width:min(560px,92vw);
+      width:min(620px,92vw);
+      max-height:88vh;
+      overflow:auto;
       background:linear-gradient(180deg,#fffaf4,#f8ead8);
       border-radius:32px;
       padding:26px;
@@ -549,7 +528,7 @@
       box-shadow:0 12px 30px rgba(0,0,0,.14);
       border:1px solid rgba(255,255,255,.5);
       display:none;
-      z-index:80;
+      z-index:120;
       font-size:15px;
       max-width:min(92vw,580px);
       text-align:center;
@@ -559,7 +538,7 @@
       position:fixed;
       font-size:28px;
       animation:float 2s linear forwards;
-      z-index:75;
+      z-index:110;
       pointer-events:none;
     }
 
@@ -635,11 +614,10 @@
         </div>
 
         <div class="panelCard">
-          <div class="panelTitle">공간의 약속</div>
-          <div class="statLine">- 조언하지 않아요</div>
-          <div class="statLine">- 판단하지 않아요</div>
-          <div class="statLine">- 비교하지 않아요</div>
-          <div class="statLine">- 위험 신호는 도움연결을 우선해요</div>
+          <div class="panelTitle">개인 공간 안내</div>
+          <div class="statLine">- 이 공간은 나만의 기록용이에요</div>
+          <div class="statLine">- 다른 사람의 대화와 섞이지 않아요</div>
+          <div class="statLine">- 같은 링크여도 내 창은 내 기록으로 열려요</div>
         </div>
       </aside>
 
@@ -687,7 +665,7 @@
   <div id="notice" aria-live="polite"></div>
 
   <script>
-    const STORAGE_KEY = "warmhug_private_diary_v1";
+    const STORAGE_KEY = "warmhug_private_diary_v2";
     const DONATION_URL = "https://buymeacoffee.com/yourname";
 
     const characters = {
@@ -900,27 +878,26 @@
     function renderMessages(){
       messages.innerHTML = "";
       if(!state.entries.length){
-        addSystemMessage("여기서는 고치려 하지 않아도 괜찮아요. 그냥 적어도 괜찮아요.", false);
+        appendSystemElement("여기서는 고치려 하지 않아도 괜찮아요. 그냥 적어도 괜찮아요.");
         return;
       }
 
       state.entries.forEach(item => {
         if(item.type === "system"){
           appendSystemElement(item.text);
-          return;
+        }else{
+          appendMessageElement(item);
         }
-        appendMessageElement(item);
       });
       scrollBottom();
     }
 
     function addSystemMessage(text, save = true){
-      appendSystemElement(text);
       if(save){
         state.entries.push({ type:"system", text });
         saveState();
       }
-      scrollBottom();
+      renderMessages();
     }
 
     function appendSystemElement(text){
@@ -1049,8 +1026,8 @@
           btn.textContent = action.label;
           if(action.className) btn.className = action.className;
           btn.addEventListener("click", () => {
-            if(action.onClick) action.onClick();
             closeModal();
+            if(action.onClick) action.onClick();
           });
           modalActions.appendChild(btn);
         });
@@ -1090,16 +1067,13 @@
         showModal({
           emoji:"☕",
           title:"후원 링크를 넣어주세요",
-          text:"코드 안의 DONATION_URL 값을 본인의 후원 링크로 바꾸면 바로 연결돼요.
-
-예: Buy Me a Coffee, 토스 후원, Ko-fi",
+          text:"코드 맨 아래쪽의 DONATION_URL 값을 본인의 후원 링크로 바꾸면 버튼이 바로 연결돼요.\n\n예: Buy Me a Coffee, Ko-fi, 토스 후원",
           actions:[
             { label:"확인", className:"softBtn", onClick:() => {} }
           ]
         });
         return;
       }
-
       window.open(DONATION_URL, "_blank");
     }
 
@@ -1120,7 +1094,7 @@
       showModal({
         emoji:"💛",
         title:"지금의 감정을 골라주세요",
-        text:"가장 가까운 마음 하나를 눌러도 괜찮고, 여러 번 기록해도 괜찮아요.",
+        text:"가장 가까운 마음을 눌러 기록할 수 있어요.",
         actions: emotions.map(item => ({
           label: `${item.emoji} ${item.label}`,
           className: "softBtn",
@@ -1188,7 +1162,7 @@
 
       const empathy = createEmpathy(text);
       addEntry({
-        id:"a_" + Date.now(),
+        id:"a_" + Date.now() + "_ai",
         who:"ai",
         nick:currentCharacter,
         text:empathy,
@@ -1231,7 +1205,7 @@
       showModal({
         emoji:"📚",
         title:"메뉴 안내",
-        text:"왼쪽 위 버튼으로 언제든 홈으로 돌아가거나, 현재 화면에서 기록을 이어갈 수 있어요.",
+        text:"이 공간은 나만의 기록용 개인 공간이에요.\n왼쪽 위 버튼으로 홈으로 돌아가거나, 이 자리에서 기록을 이어갈 수 있어요.",
         actions:[
           { label:"확인", className:"softBtn", onClick:() => {} }
         ]
