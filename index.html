@@ -290,7 +290,7 @@ button:hover{transform:translateY(-2px) scale(1.02); box-shadow:0 14px 28px rgba
 </head>
 <body>
 <div class="frame">
-  <audio id="bgm" autoplay loop>
+  <audio id="bgm" autoplay loop controls>
     <source src="cozy_hug_bgm.wav" type="audio/wav">
   </audio>
   <audio id="pop" preload="auto">
@@ -300,7 +300,7 @@ button:hover{transform:translateY(-2px) scale(1.02); box-shadow:0 14px 28px rgba
   <div class="sub">따뜻한 조명 아래, 잠깐 쉬어가도 괜찮아요</div>
 
   <div id="home">
-    <img class="heroBear" src="bear.png" alt="곰돌이" onerror="this.style.display='none'" />
+    <img class="heroBear" src="bear.png" alt="곰돌이" />
     <div class="heroNote">포근한 침대 옆 작은 무드등처럼, 오늘 마음을 내려놓아도 괜찮아요</div>
     <button onclick="enterRooms()">포옹 받으러 들어가기</button>
   </div>
@@ -331,7 +331,7 @@ button:hover{transform:translateY(-2px) scale(1.02); box-shadow:0 14px 28px rgba
 
   <div id="chat">
     <div class="chatTop">
-      <img class="chatBearMini" src="bear.png" alt="곰돌이" onerror="this.style.display='none'" />
+      <img class="chatBearMini" src="bear.png" alt="곰돌이" />
       <div>
         <div class="chatTitle" id="chatTitle">친구 방</div>
         <div class="chatDesc">말 한마디도 따뜻하게 머물도록</div>
@@ -348,7 +348,7 @@ button:hover{transform:translateY(-2px) scale(1.02); box-shadow:0 14px 28px rgba
 <div id="hug">
   <div class="hugBearWrap">
     <div class="hugArm armL"></div>
-    <img class="hugBear" src="bear.png" alt="곰돌이 포옹" onerror="this.style.display='none'" />
+    <img class="hugBear" src="bear.png" alt="곰돌이 포옹" />
     <div class="hugArm armR"></div>
   </div>
 </div>
@@ -451,4 +451,3 @@ window.addEventListener('beforeunload',()=>{
 </script>
 </body>
 </html>
-
