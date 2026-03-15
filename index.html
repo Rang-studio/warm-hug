@@ -14,7 +14,6 @@
   --card:#f7efe5;
   --card2:#fffaf3;
   --brown:#6b4a36;
-  --shadow:0 16px 40px rgba(0,0,0,.18);
 }
 *{box-sizing:border-box}
 body{
@@ -94,14 +93,15 @@ header{
   padding:20px;
 }
 .heroBear{
-  width:min(48vw,320px);
-  height:min(48vw,320px);
-  object-fit:cover;
-  object-position:center;
+  width:min(46vw,300px);
+  height:min(58vw,380px);
+  object-fit:contain;
+  object-position:center bottom;
   border-radius:36px;
   border:8px solid rgba(255,248,238,.95);
-  box-shadow:var(--shadow);
+  box-shadow:0 16px 34px rgba(0,0,0,.10);
   background:#f5ede3;
+  padding:14px;
   animation:idle 2.8s ease-in-out infinite;
 }
 .heroNote{
@@ -164,7 +164,7 @@ button:hover{transform:translateY(-2px) scale(1.02); box-shadow:0 14px 28px rgba
   padding:10px 8px 12px;
 }
 .chatBearMini{
-  width:56px;height:56px;object-fit:cover;border-radius:18px;border:3px solid #fff8f0;box-shadow:0 8px 18px rgba(0,0,0,.12);
+  width:56px;height:56px;object-fit:contain;object-position:center bottom;padding:3px;border-radius:18px;border:3px solid #fff8f0;box-shadow:0 8px 18px rgba(0,0,0,.12);background:#f5ede3;
 }
 .chatTitle{font-size:26px;color:#61412c}
 .chatDesc{font-size:16px;color:#8c6d56}
@@ -231,18 +231,20 @@ button:hover{transform:translateY(-2px) scale(1.02); box-shadow:0 14px 28px rgba
 }
 .hugBearWrap{position:relative;display:flex;align-items:center;justify-content:center}
 .hugBear{
-  width:min(72vw,440px);
-  height:min(72vw,440px);
-  object-fit:cover;
+  width:min(58vw,360px);
+  height:min(72vw,460px);
+  object-fit:contain;
+  object-position:center bottom;
   border-radius:42px;
   border:10px solid rgba(255,248,238,.95);
   box-shadow:0 24px 55px rgba(0,0,0,.18);
   animation:hugBounce 1.15s infinite alternate ease-in-out;
   background:#f5ede3;
+  padding:18px;
 }
 .hugArm{
   position:absolute;
-  top:58%;
+  top:60%;
   width:118px;
   height:74px;
   background:#f0ddce;
@@ -279,9 +281,10 @@ button:hover{transform:translateY(-2px) scale(1.02); box-shadow:0 14px 28px rgba
 }
 @media (max-width:700px){
   .frame{width:100vw;height:100vh;margin:0;border-radius:0}
-  .heroBear{width:74vw;height:74vw}
+  .heroBear{width:72vw;height:82vw}
   .roomName{font-size:24px}
   .msg{font-size:18px}
+  .hugBear{width:74vw;height:86vw}
 }
 </style>
 </head>
@@ -355,6 +358,19 @@ button:hover{transform:translateY(-2px) scale(1.02); box-shadow:0 14px 28px rgba
 const names=["옥수수차","둥글레차","홍차","녹차"];
 let nickname=names[Math.floor(Math.random()*names.length)];
 let currentRoom='친구 방';
+const replies=[
+  '괜찮아요. 여기서는 천천히 말해도 돼요.',
+  '많이 애썼네요. 잠깐 기대어 쉬어요.',
+  '지금 이곳에서는 편안했으면 좋겠어요.',
+  '따뜻한 차 한 잔처럼 마음이 조금 풀리면 좋겠어요.'
+];
+let replyPool=[];
+function nextReply(){
+  if(replyPool.length===0){
+    replyPool=[...replies].sort(()=>Math.random()-0.5);
+  }
+  return replyPool.pop();
+}
 
 function sound(){
   const pop=document.getElementById('pop');
@@ -406,14 +422,8 @@ function sendMsg(){
   setTimeout(seedOtherMessage,700);
 }
 function seedOtherMessage(){
-  const replies=[
-    '괜찮아요. 여기서는 천천히 말해도 돼요.',
-    '많이 애썼네요. 잠깐 기대어 쉬어요.',
-    '지금 이곳에서는 편안했으면 좋겠어요.',
-    '따뜻한 차 한 잔처럼 마음이 조금 풀리면 좋겠어요.'
-  ];
   const others=['옥수수차','둥글레차','홍차','녹차'].filter(n=>n!==nickname);
-  addMessage(replies[Math.floor(Math.random()*replies.length)],'other',others[Math.floor(Math.random()*others.length)]);
+  addMessage(nextReply(),'other',others[Math.floor(Math.random()*others.length)]);
 }
 function hug(){
   let h=document.getElementById('hug');
@@ -441,3 +451,4 @@ window.addEventListener('beforeunload',()=>{
 </script>
 </body>
 </html>
+
