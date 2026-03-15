@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
@@ -479,10 +478,7 @@
     }
 
     .roleSelect{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      margin-bottom:10px;
+      display:none;
     }
 
     .rolePill{
@@ -744,10 +740,7 @@
       <div class="room" data-room="friend">
         <div>
           <div class="roomName">친구의 방</div>
-          <div class="roomMeta">
-            동등한 입장에서 짧은 고민과 따뜻한 허그를 주고받는 공간<br />
-            최대 4명 / 고민 50자 / 허그 반응 중심
-          </div>
+          <div class="roomMeta">동등한 입장에서 짧은 고민과 따뜻한 허그를 주고받는 공간</div>
         </div>
         <div class="roomTag">공감</div>
       </div>
@@ -755,10 +748,7 @@
       <div class="room" data-room="comfort">
         <div>
           <div class="roomName">포근한 방</div>
-          <div class="roomMeta">
-            말보다 다정한 반응이 먼저 오는 공간<br />
-            큰 곰, 토닥임, 하트, 안심 이모티콘 중심
-          </div>
+          <div class="roomMeta">말보다 다정한 반응이 먼저 오는 공간</div>
         </div>
         <div class="roomTag">보호</div>
       </div>
@@ -766,10 +756,7 @@
       <div class="room" data-room="help">
         <div>
           <div class="roomName">도움연결 방</div>
-          <div class="roomMeta">
-            혼자 감당하기 어려운 상황일 때 공식 기관과 연결되는 공간<br />
-            1366 / 117 / 112 / 119 연계
-          </div>
+          <div class="roomMeta">혼자 감당하기 어려운 상황일 때 공식 기관과 연결되는 공간</div>
         </div>
         <div class="roomTag">연결</div>
       </div>
@@ -910,17 +897,17 @@
       friend: {
         title: "친구의 방",
         emoji: "🤎",
-        desc: "동등한 입장에서 고민과 허그를 나누는 공간이에요. 조언 없이 공감만 머물러요.",
-        roles: ["친구 1", "친구 2", "친구 3", "친구 4"],
-        welcome: "친구의 방에 들어왔어요. 고민은 입장 순서대로 올릴 수 있어요.",
-        systemUsers: ["보리차", "홍차", "녹차"]
+        desc: "동등한 입장에서 고민과 허그를 나누는 공간이에요.",
+        roles: [],
+        welcome: "친구의 방에 들어왔어요.",
+        systemUsers: ["보리차", "홍차"]
       },
       comfort: {
         title: "포근한 방",
         emoji: "🧸",
-        desc: "말보다 먼저 포근함이 도착하는 공간이에요. 큰 곰과 하트가 안아줄 거예요.",
-        roles: ["포근한 곰", "다정한 친구", "조용한 보호자"],
-        welcome: "포근한 방에 들어왔어요. 여기서는 말이 적어도 괜찮아요.",
+        desc: "말보다 먼저 포근함이 도착하는 공간이에요.",
+        roles: [],
+        welcome: "포근한 방에 들어왔어요.",
         systemUsers: ["하얀곰", "갈색곰"]
       },
       help: {
@@ -928,7 +915,7 @@
         emoji: "🆘",
         desc: "혼자 감당하기 어렵다면, 공식 기관과 연결되는 길을 보여드릴게요.",
         roles: [],
-        welcome: "도움연결 방에 들어왔어요. 지금의 상황에 맞는 기관으로 이어질 수 있어요.",
+        welcome: "도움연결 방에 들어왔어요.",
         systemUsers: []
       }
     };
@@ -1145,34 +1132,24 @@
     function renderPresence(info){
       presenceBar.innerHTML = "";
       const userList = [currentNickname, ...info.systemUsers].slice(0, roomKeyMaxPeople(currentRoom));
-      userList.forEach((name, index) => {
+      userList.forEach(name => {
         const chip = document.createElement("div");
         chip.className = "presenceChip";
-        chip.textContent = `${index + 1} ${name}`;
+        chip.textContent = name;
         presenceBar.appendChild(chip);
       });
     }
 
     function roomKeyMaxPeople(roomKey){
-      if(roomKey === "friend") return 4;
+      if(roomKey === "friend") return 3;
       if(roomKey === "comfort") return 3;
       return 1;
     }
 
     function renderRoles(info){
       roleSelect.innerHTML = "";
-      currentRole = info.roles[0] || "";
-      if(!info.roles.length){
-        roleSelect.style.display = "none";
-        return;
-      }
-      roleSelect.style.display = "flex";
-      info.roles.forEach((role, idx) => {
-        const pill = document.createElement("div");
-        pill.className = "rolePill";
-        pill.textContent = idx === 0 ? `현재 모드: ${role}` : role;
-        roleSelect.appendChild(pill);
-      });
+      currentRole = "";
+      roleSelect.style.display = "none";
     }
 
     function renderMessages(roomKey){
