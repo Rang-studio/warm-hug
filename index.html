@@ -52,22 +52,15 @@
       min-height:100%;
     }
 
- body{
+body{
   font-family:"Noto Sans KR", sans-serif;
   color:var(--brown-1);
-  background:
-    radial-gradient(circle at 15% 18%, rgba(255,240,214,.95) 0%, rgba(255,240,214,0) 24%),
-    radial-gradient(circle at 84% 12%, rgba(255,223,174,.85) 0%, rgba(255,223,174,0) 20%),
-    radial-gradient(circle at 78% 72%, rgba(255,236,208,.55) 0%, rgba(255,236,208,0) 18%),
-    linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 52%, var(--bg-3) 100%);
-    
+  background: ...;
   overflow-y:auto;
   overflow-x:hidden;
-
-  scroll-behavior:smooth;
   -webkit-overflow-scrolling:touch;
+  position:relative;
 }
-
     body::before{
       content:"";
       position:fixed;
@@ -85,17 +78,13 @@
       text-decoration:none;
     }
 
-  .frame{
+.frame{
   width:min(1180px, 96vw);
   min-height:95vh;
   margin:2.5vh auto;
   border-radius:36px;
   position:relative;
-
   overflow:visible;
-
-  background:
-    linear-gradient(180deg, rgba(255,251,246,.82), rgba(250,242,232,.88));
 }
 
     .frame::before{
@@ -284,7 +273,7 @@
       cursor:pointer;
       transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
       position:relative;
-      overflow:hidden;
+      overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch;
     }
 
     .room::before{
@@ -361,11 +350,11 @@
     }
 
     #appView{
-      display:none;
-      grid-template-columns: 320px 1fr;
-      gap:0;
-      min-height:calc(100vh - 120px);
-    }
+  display:none;
+  grid-template-columns: 320px 1fr;
+  gap:0;
+  min-height:600px;
+}
 
     .sidePanel{
       background:rgba(255,249,241,.42);
@@ -487,21 +476,16 @@
       box-shadow:inset 0 1px 0 rgba(255,255,255,.42);
     }
 
-    #messages{
+#messages{
   flex:1;
   overflow-y:auto;
   overflow-x:hidden;
-
   padding:14px 18px 10px;
   display:flex;
   flex-direction:column;
   gap:13px;
-
-  scroll-behavior:smooth;
   -webkit-overflow-scrolling:touch;
-  overscroll-behavior-y:contain;
 }
-
     .systemMsg{
       align-self:center;
       background:rgba(255,250,243,.9);
@@ -814,12 +798,12 @@
     }
 
     @media (max-width:760px){
-      .frame{
-        width:100vw;
-        min-height:100vh;
-        margin:0;
-        border-radius:0;
-      }
+     .frame{
+  width:100vw;
+  min-height:100vh;
+  margin:0;
+  border-radius:0;
+}
 
       header{
         font-size:30px;
