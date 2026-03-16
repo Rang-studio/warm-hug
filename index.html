@@ -973,17 +973,18 @@ body{
         <button id="regenNickBtn" class="softBtn" type="button">닉네임 바꾸기</button>
       </div>
 
-      <div class="roomList">
-        <div class="room" data-room="friend">
-          <div class="roomLeft">
-            <div class="roomIcon">🫂</div>
-            <div class="roomText">
-              <div class="roomName">친구의 방</div>
-              <div class="roomMeta">동등한 입장에서 짧은 고민과 따뜻한 허그를 주고받는 공간</div>
-            </div>
-          </div>
-          <div class="roomTag">공감</div>
-        </div>
+     <div class="roomList">
+  <div class="room" data-room="comfort">
+    <div class="roomLeft">
+      <div class="roomIcon">🧸</div>
+      <div class="roomText">
+        <div class="roomName">포근한 방</div>
+        <div class="roomMeta">말보다 다정한 반응이 먼저 와서 마음을 감싸주는 공간</div>
+      </div>
+    </div>
+    <div class="roomTag">보호</div>
+  </div>
+</div>
 
         <div class="room" data-room="comfort">
           <div class="roomLeft">
@@ -1153,14 +1154,6 @@ body{
     ];
 
     const roomConfig = {
-      friend: {
-        title: "친구의 방",
-        emoji: "🫂",
-        desc: "동등한 입장에서 고민과 허그를 나누는 공간이에요.",
-        roles: [],
-        welcome: "친구의 방에 들어왔어요.",
-        systemUsers: ["보리차", "홍차"]
-      },
       comfort: {
         title: "포근한 방",
         emoji: "🧸",
@@ -1299,7 +1292,6 @@ body{
         reports: 0,
         suspensions: 0,
         rooms: {
-          friend: [],
           comfort: [],
           help: []
         }
