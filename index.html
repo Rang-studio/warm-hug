@@ -14,20 +14,6 @@
   <link href="https://fonts.googleapis.com/css2?family=MaruBuri:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet" />
 
   <style>
-    .topLeftButtons{
-  position:absolute;
-  top:18px;
-  left:18px;
-  z-index:30;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
-
-.leftTopBtn{
-  text-align:left;
-  min-width:88px;
-}
     :root{
       --bg-1:#f4ede4;
       --bg-2:#e7d7c6;
@@ -622,10 +608,6 @@
     }
 
     @media (max-width:760px){
-      .topLeftButtons{
-  top:12px;
-  left:12px;
-}
       .frame{ width:100vw; min-height:100vh; margin:0; border-radius:0; }
       header{ font-size:30px; padding-top:74px; }
       .sub{ font-size:15px; }
@@ -640,18 +622,12 @@
   </style>
 </head>
 <body>
-  <audio id="bgm" autoplay loop preload="auto" style="display:none;">
-    <source src="music.wav.wav" type="audio/wav" />
-  </audio>
-
   <div class="frame">
     <div class="topLeftButtons">
       <button id="menuBtn" class="softBtn leftTopBtn underlinedStrong" type="button">메뉴</button>
       <button id="homeBtn" class="softBtn leftTopBtn" type="button">홈으로</button>
     </div>
-<div class="topLeftButtons">
-  <button id="homeBtn" class="softBtn leftTopBtn" type="button">홈</button>
-</div>
+
     <header>따뜻한 포옹</header>
     <div class="sub">조언 없이, 판단 없이, 공감만 머무는 익명 감정 쉼터</div>
 
@@ -721,11 +697,7 @@
               <button id="sendBtn" type="button">공감 받기</button>
               <button id="emotionBtn" class="softBtn" type="button">감정 기록</button>
               <button id="hugMyselfBtn" class="softBtn" type="button">나에게 포옹</button>
-            </div><div class="inputBtns">
-  <button id="sendBtn" type="button">고민 올리기</button>
-  <button id="emotionBtn" class="softBtn" type="button">감정 기록</button>
-  <button id="hugMyselfBtn" class="softBtn" type="button">나에게 포옹</button>
-</div>
+            </div>
           </div>
         </div>
       </div>
@@ -743,11 +715,24 @@
 
   <div id="notice" aria-live="polite"></div>
 
+  <!--
+  =========================================
+  따뜻한 포옹 Warmhug
+  Original Creator: 여사랑
+  All Rights Reserved
+
+  이 코드는 제작자 여사랑의 창작물입니다.
+  무단 복제 / 재배포 / 상업적 사용을 금지합니다.
+  =========================================
+  -->
+
   <script>
     const STORAGE_KEY = "warmhug_private_diary_v3";
     const DONATION_BANK = "국민은행";
     const DONATION_ACCOUNT = "51840201642069";
     const DONATION_HOLDER = "여사랑";
+    const SITE_CREATOR = "여사랑";
+    const SITE_SIGNATURE = "Warmhug Original by 여사랑";
 
     console.log(
       "%cWarmhug - 따뜻한 포옹\nCreator: 여사랑\nUnauthorized copying prohibited.",
@@ -805,44 +790,87 @@
 
     const emotionPatterns = {
       불안: [
-        { word: "불안", score: 3 }, { word: "초조", score: 3 }, { word: "긴장", score: 2 },
-        { word: "조마조마", score: 3 }, { word: "무서", score: 2 }, { word: "걱정", score: 2 },
-        { word: "떨", score: 2 }, { word: "겁", score: 2 }, { word: "혼란", score: 2 }
+        { word: "불안", score: 3 },
+        { word: "초조", score: 3 },
+        { word: "긴장", score: 2 },
+        { word: "조마조마", score: 3 },
+        { word: "무서", score: 2 },
+        { word: "걱정", score: 2 },
+        { word: "떨", score: 2 },
+        { word: "겁", score: 2 },
+        { word: "혼란", score: 2 }
       ],
       슬픔: [
-        { word: "슬프", score: 3 }, { word: "눈물", score: 3 }, { word: "울었", score: 3 },
-        { word: "울고", score: 3 }, { word: "외롭", score: 3 }, { word: "서럽", score: 3 },
-        { word: "허전", score: 2 }, { word: "공허", score: 3 }, { word: "속상", score: 2 },
+        { word: "슬프", score: 3 },
+        { word: "눈물", score: 3 },
+        { word: "울었", score: 3 },
+        { word: "울고", score: 3 },
+        { word: "외롭", score: 3 },
+        { word: "서럽", score: 3 },
+        { word: "허전", score: 2 },
+        { word: "공허", score: 3 },
+        { word: "속상", score: 2 },
         { word: "상처", score: 2 }
       ],
       분노: [
-        { word: "화나", score: 3 }, { word: "짜증", score: 3 }, { word: "억울", score: 3 },
-        { word: "분하", score: 3 }, { word: "열받", score: 4 }, { word: "빡쳐", score: 4 },
-        { word: "답답", score: 2 }, { word: "미치겠", score: 2 }, { word: "참기 힘들", score: 3 }
+        { word: "화나", score: 3 },
+        { word: "짜증", score: 3 },
+        { word: "억울", score: 3 },
+        { word: "분하", score: 3 },
+        { word: "열받", score: 4 },
+        { word: "빡쳐", score: 4 },
+        { word: "답답", score: 2 },
+        { word: "미치겠", score: 2 },
+        { word: "참기 힘들", score: 3 }
       ],
       지침: [
-        { word: "지쳐", score: 3 }, { word: "피곤", score: 3 }, { word: "버겁", score: 3 },
-        { word: "힘들", score: 2 }, { word: "무기력", score: 4 }, { word: "기운이 없", score: 3 },
-        { word: "지친", score: 3 }, { word: "녹초", score: 4 }, { word: "소진", score: 4 }
+        { word: "지쳐", score: 3 },
+        { word: "피곤", score: 3 },
+        { word: "버겁", score: 3 },
+        { word: "힘들", score: 2 },
+        { word: "무기력", score: 4 },
+        { word: "기운이 없", score: 3 },
+        { word: "지친", score: 3 },
+        { word: "녹초", score: 4 },
+        { word: "소진", score: 4 }
       ],
       위로필요: [
-        { word: "위로", score: 3 }, { word: "안아", score: 3 }, { word: "포옹", score: 3 },
-        { word: "기대고 싶", score: 3 }, { word: "괜찮지 않", score: 4 }, { word: "버티기 힘들", score: 4 },
-        { word: "누가 좀", score: 2 }, { word: "살기 힘들", score: 4 }
+        { word: "위로", score: 3 },
+        { word: "안아", score: 3 },
+        { word: "포옹", score: 3 },
+        { word: "기대고 싶", score: 3 },
+        { word: "괜찮지 않", score: 4 },
+        { word: "버티기 힘들", score: 4 },
+        { word: "누가 좀", score: 2 },
+        { word: "살기 힘들", score: 4 }
       ],
       관계: [
-        { word: "친구", score: 2 }, { word: "엄마", score: 2 }, { word: "아빠", score: 2 },
-        { word: "부모", score: 2 }, { word: "가족", score: 2 }, { word: "학교", score: 2 },
-        { word: "회사", score: 2 }, { word: "선생", score: 2 }, { word: "사람", score: 1 },
+        { word: "친구", score: 2 },
+        { word: "엄마", score: 2 },
+        { word: "아빠", score: 2 },
+        { word: "부모", score: 2 },
+        { word: "가족", score: 2 },
+        { word: "학교", score: 2 },
+        { word: "회사", score: 2 },
+        { word: "선생", score: 2 },
+        { word: "사람", score: 1 },
         { word: "관계", score: 2 }
       ],
       멍함: [
-        { word: "멍", score: 3 }, { word: "아무 느낌", score: 4 }, { word: "무감각", score: 4 },
-        { word: "텅 빈", score: 3 }, { word: "붕 뜬", score: 3 }, { word: "실감이 안", score: 3 }
+        { word: "멍", score: 3 },
+        { word: "아무 느낌", score: 4 },
+        { word: "무감각", score: 4 },
+        { word: "텅 빈", score: 3 },
+        { word: "붕 뜬", score: 3 },
+        { word: "실감이 안", score: 3 }
       ],
       평온: [
-        { word: "괜찮아졌", score: 3 }, { word: "편안", score: 3 }, { word: "안정", score: 3 },
-        { word: "차분", score: 3 }, { word: "평온", score: 4 }, { word: "조금 나아", score: 2 }
+        { word: "괜찮아졌", score: 3 },
+        { word: "편안", score: 3 },
+        { word: "안정", score: 3 },
+        { word: "차분", score: 3 },
+        { word: "평온", score: 4 },
+        { word: "조금 나아", score: 2 }
       ]
     };
 
@@ -870,8 +898,6 @@
     const charCount = document.getElementById("charCount");
     const sendBtn = document.getElementById("sendBtn");
     const emotionBtn = document.getElementById("emotionBtn");
-    const emotionBtn = document.getElementById("emotionBtn");
-const homeBtn = document.getElementById("homeBtn");
     const hugMyselfBtn = document.getElementById("hugMyselfBtn");
     const todayHugs = document.getElementById("todayHugs");
     const weekWarmth = document.getElementById("weekWarmth");
@@ -888,7 +914,6 @@ const homeBtn = document.getElementById("homeBtn");
     const modalText = document.getElementById("modalText");
     const modalActions = document.getElementById("modalActions");
     const notice = document.getElementById("notice");
-    const bgm = document.getElementById("bgm");
 
     const state = loadState();
     let currentCharacter = state.currentCharacter || "둥글레차";
@@ -940,15 +965,6 @@ const homeBtn = document.getElementById("homeBtn");
       renderMessages();
       updateCharCount();
       showNotice("따뜻한 포옹에 오신 걸 환영해요.");
-
-      const tryPlayBgm = () => {
-        if(!bgm) return;
-        bgm.play().catch(() => {});
-      };
-
-      tryPlayBgm();
-      document.addEventListener("click", tryPlayBgm, { once:true });
-      document.addEventListener("touchstart", tryPlayBgm, { once:true });
     }
 
     function showApp(){
@@ -962,24 +978,6 @@ const homeBtn = document.getElementById("homeBtn");
       app.style.display = "none";
       home.style.display = "flex";
       window.scrollTo({ top:0, behavior:"smooth" });
-    }
-
-    function showHomePopup(){
-      showModal({
-        emoji:"🏠",
-        title:"홈",
-        text:`확인하고 싶은 항목을 골라주세요.
-
-감정 기록: ${state.emotions.length ? formatEmotionLabel(state.emotions[0]) : "아직 기록이 없어요."}
-오늘 받은 포옹: ${state.stats.todayHugs}회
-총 포옹 수: ${state.stats.weekWarmth}회`,
-        actions:[
-          { label:"감정 기록 보기", className:"softBtn", onClick:showEmotionHistory },
-          { label:"오늘 받은 포옹", className:"softBtn", onClick:showTodayHugsInfo },
-          { label:"총 포옹 수", className:"softBtn", onClick:showTotalHugsInfo },
-          { label:"홈으로 이동", className:"softBtn", onClick:goHome }
-        ]
-      });
     }
 
     function showNotice(text){
@@ -1311,7 +1309,8 @@ const homeBtn = document.getElementById("homeBtn");
       showModal({
         emoji:"🤎",
         title:"후원하기",
-        text:`따뜻한 포옹을 응원해주셔서 감사합니다.\n\n${DONATION_BANK}\n${DONATION_ACCOUNT}\n예금주: ${DONATION_HOLDER}`,
+        text:
+`따뜻한 포옹을 응원해주셔서 감사합니다.\n\n${DONATION_BANK}\n${DONATION_ACCOUNT}\n예금주: ${DONATION_HOLDER}`,
         actions:[
           {
             label:"계좌번호 복사",
@@ -1557,10 +1556,8 @@ const homeBtn = document.getElementById("homeBtn");
     guideBtn.addEventListener("click", showHelpGuide);
     clearBtn.addEventListener("click", clearAllEntries);
     menuBtn.addEventListener("click", showMenuGuide);
-    homeBtn.addEventListener("click", showHomePopup);
+    homeBtn.addEventListener("click", goHome);
     sendBtn.addEventListener("click", handleSend);
-    emotionBtn.addEventListener("click", showEmotionPicker);
-homeBtn.addEventListener("click", showHomePopup);
     emotionBtn.addEventListener("click", showEmotionPicker);
 
     msgInput.addEventListener("input", () => {
