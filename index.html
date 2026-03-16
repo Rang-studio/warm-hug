@@ -129,7 +129,9 @@
 body{
   font-family:"Noto Sans KR", sans-serif;
   color:var(--brown-1);
-  background: ...;
+  background:
+  radial-gradient(circle at top left, #fff8ef, transparent 28%),
+  linear-gradient(180deg, var(--bg-1), var(--bg-2) 52%, var(--bg-3));
   overflow-y:auto;
   overflow-x:hidden;
   -webkit-overflow-scrolling:touch;
@@ -1026,14 +1028,6 @@ body{
     작성한 내용은 다른 사람에게 보이지 않고,<br>
     이 기기의 브라우저에만 저장돼요.
   </div>
-<div class="homeSummaryCard">
-  <div class="homeSummaryTitle">오늘의 기록</div>
-
-  <div class="homeSummaryGrid">
-    <div class="homeSummaryItem">
-      <div class="homeSummaryLabel">감정 기록</div>
-      <div class="homeSummaryValue" id="homeEmotionSummary">아직 기록이 없어요.</div>
-    </div>
 
     <div class="homeSummaryItem">
       <div class="homeSummaryLabel">오늘 받은 포옹</div>
@@ -1287,56 +1281,6 @@ const hugTypes = [
     needsConfirm: true
   }
 ];
-    const hugTypes = [const roomConfig = {
-  comfort: {
-    title: "포근한 방",
-    emoji: "🧸",
-    desc: "말보다 먼저 포근함이 도착하는 공간이에요.",
-    roles: [],
-    welcome: "포근한 방에 들어왔어요.",
-    systemUsers: ["하얀곰", "갈색곰"]
-  },
-  help: {
-    title: "도움연결 방",
-    emoji: "🆘",
-    desc: "혼자 감당하기 어렵다면, 공식 기관과 연결되는 길을 보여드릴게요.",
-    roles: [],
-    welcome: "",
-    systemUsers: []
-  }
-};
-
-const hugTypes = [
-      {
-        id: "ok",
-        label: "괜찮아질 거예요",
-        emoji: "🤍",
-        popupEmoji: "🧸",
-        message: "괜찮아질 거예요.\n여기서는 잠깐 기대어도 괜찮아요."
-      },
-      {
-        id: "hold",
-        label: "잘 될 거예요",
-        emoji: "💛",
-        popupEmoji: "🐻",
-        message: "잘 될 거예요.\n지금까지도 충분히 잘 버텨왔어요."
-      },
-      {
-        id: "pain",
-        label: "많이 아팠죠? 이제 괜찮아요",
-        emoji: "🧡",
-        popupEmoji: "🫂",
-        message: "많이 아팠죠?\n이제 잠깐 여기서 쉬어요."
-      },
-      {
-        id: "help",
-        label: "도움이 필요해보여요",
-        emoji: "🚨",
-        popupEmoji: "🆘",
-        message: "혼자 감당하기 힘들어 보여요.\n전문기관과 연결해볼까요?",
-        needsConfirm: true
-      }
-    ];
 
     const blockedWords = [
       "죽어", "병신", "멍청", "꺼져", "씨발", "시발", "좆", "자살", "죽고싶", "죽고 싶", "학대", "폭행", "성폭행", "강간", "살인", "패고", "찔러"
@@ -1405,10 +1349,9 @@ const homeTotalHugs = document.getElementById("homeTotalHugs");
     let longPressTimer = null;
     let longPressTriggered = false;
 
-    const state = loadState();
-
-    init();
-function init(){
+    const state = loadState();;
+  
+    function init(){
   currentNickname = state.nickname || generateNickname();
   state.nickname = currentNickname;
   saveState();
@@ -1416,10 +1359,10 @@ function init(){
   nicknameChip.textContent = `나의 닉네임: ${currentNickname}`;
   updateStats();
   updateHomeSummary();
-
   showNotice("포근한 공간에 오신 걸 환영해요.");
 }
-      function updateHomeSummary(){
+
+function updateHomeSummary(){
   homeTodayHugs.textContent = `${state.stats.todayHugs} 🫂`;
   homeTotalHugs.textContent = `${state.stats.weekWarmth} hugs`;
 
@@ -1429,7 +1372,6 @@ function init(){
     homeEmotionSummary.textContent = state.emotions[0];
   }
 }
-
       showNotice("포근한 공간에 오신 걸 환영해요.");
     }
 
@@ -1623,15 +1565,14 @@ function init(){
       const hugBar = document.createElement("div");
       hugBar.className = "hugBar";
 
-      hugTypes.forEach(type => {
-        const btn = document.createElement("button");
-        btn.className = "hugMini";
-        btn.type = "button";
-        btn.textContent = `${type.emoji} ${type.label}`;
-      homeBtn.addEventListener("click", showHomePopup);
-        hugBar.appendChild(btn);
-      });
-
+    hugTypes.forEach(type => {
+  const btn = document.createElement("button");
+  btn.className = "hugMini";
+  btn.type = "button";
+  btn.textContent = `${type.emoji} ${type.label}`;
+  btn.addEventListener("click", () => handleHug(item.id, type));
+  hugBar.appendChild(btn);
+});
       addLongPressEvents(wrap, item);
 
       wrap.appendChild(nick);
@@ -2046,14 +1987,7 @@ function resetCurrentRoomChat(roomKey){
   updateEmotionUI();
   updateHomeSummary();
 }
-    function updateEmotionUI(){
-      emotionList.innerHTML = "";
-
-      if(!state.emotions.length){
-        emotionSummary.textContent = "오늘의 마음: 아직 기록이 없어요.";
-        return;
-      }
-      function updateEmotionUI(){
+   function updateEmotionUI(){
   emotionList.innerHTML = "";
 
   if(!state.emotions.length){
@@ -2062,6 +1996,18 @@ function resetCurrentRoomChat(roomKey){
     return;
   }
 
+  emotionSummary.textContent = `오늘의 마음: ${state.emotions[0]}`;
+
+  const uniq = [...new Set(state.emotions)].slice(0, 6);
+  uniq.forEach(emotion => {
+    const chip = document.createElement("div");
+    chip.className = "emotionChip";
+    chip.textContent = emotion;
+    emotionList.appendChild(chip);
+  });
+
+  updateHomeSummary();
+}
   emotionSummary.textContent = `오늘의 마음: ${state.emotions[0]}`;
 
   const uniq = [...new Set(state.emotions)].slice(0, 6);
@@ -2170,7 +2116,7 @@ donateBtn.addEventListener("click", showDonationGuide);
     });
 
     window.addEventListener("blur", simulateDisconnectGrace);
-
+homeBtn.addEventListener("click", showHomePopup);
     window.addEventListener("focus", () => {
       clearTimeout(disconnectTimer);
     });
