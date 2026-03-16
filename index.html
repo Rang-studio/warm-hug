@@ -69,19 +69,19 @@
         radial-gradient(circle at 84% 78%, rgba(255,255,255,.15), transparent 14%);
       opacity:.7;
     }
-
-    .frame{
-      width:min(1160px, 96vw);
-      min-height:95vh;
-      margin:2.5vh auto;
-      border-radius:36px;
-      overflow:hidden;
-      position:relative;
-      background:linear-gradient(180deg, rgba(255,250,244,.62), rgba(255,246,239,.44));
-      box-shadow:var(--shadow);
-      border:1px solid rgba(255,255,255,.45);
-      backdrop-filter: blur(6px);
-    }
+.frame{
+  width:1160px;
+  min-height:95vh;
+  margin:2.5vh auto;
+  border-radius:36px;
+  overflow:hidden;
+  position:relative;
+  background:linear-gradient(180deg, rgba(255,250,244,.62), rgba(255,246,239,.44));
+  box-shadow:var(--shadow);
+  border:1px solid rgba(255,255,255,.45);
+  backdrop-filter: blur(6px);
+}
+  
 
     .frame::before{
       content:"";
@@ -602,26 +602,18 @@
       }
     }
 
-    @media (max-width:980px){
-      #app{ grid-template-columns:1fr; }
-      .sidePanel{ display:none; }
-    }
-
-    @media (max-width:760px){
-      .frame{ width:100vw; min-height:100vh; margin:0; border-radius:0; }
-      header{ font-size:30px; padding-top:74px; }
-      .sub{ font-size:15px; }
-      .heroBear{ font-size:96px; }
-      .heroNote{ font-size:16px; border-radius:28px; }
-      .chatTitle{ font-size:21px; }
-      .msgWrap{ max-width:92%; }
-      #messages{ min-height:280px; }
-      .topLeftButtons{ top:12px; left:12px; }
-      .leftTopBtn{ min-width:104px; }
-    }
+   
   </style>
 </head>
 <body>
+  body{
+  font-family:"Noto Sans KR", sans-serif;
+  color:var(--brown-1);
+  background:
+    radial-gradient(circle at top left, #fff8ef, transparent 28%),
+    linear-gradient(180deg, var(--bg-1), var(--bg-2) 52%, var(--bg-3));
+  overflow-x:auto;
+}
   <div class="frame">
     <div class="topLeftButtons">
       <button id="menuBtn" class="softBtn leftTopBtn underlinedStrong" type="button">메뉴</button>
