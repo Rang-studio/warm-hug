@@ -727,7 +727,7 @@
   -->
 
   <script>
-    const STORAGE_KEY = "warmhug_private_diary_v3";
+    const STORAGE_KEY = "warmhug_private_diary_v3"; // 이 기기 브라우저에 기록을 저장하는 키
     const DONATION_BANK = "국민은행";
     const DONATION_ACCOUNT = "51840201642069";
     const DONATION_HOLDER = "여사랑";
@@ -933,6 +933,7 @@
 
     function loadState(){
       try{
+        // localStorage를 사용하면 브라우저를 껐다 켜도 이 기기에는 기록이 남아 있어요.
         const saved = localStorage.getItem(STORAGE_KEY);
         if(saved){
           const parsed = JSON.parse(saved);
@@ -949,8 +950,8 @@
     }
 
     function saveState(){
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    }
+      // 사용자가 남긴 기록을 이 기기 브라우저에 저장해요.
+      localStora
 
     function getInitialMessageSeq(){
       const count = state.entries.filter(item => item.who === "me").length;
