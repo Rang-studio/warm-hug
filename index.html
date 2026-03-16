@@ -713,14 +713,91 @@ const DONATION_HOLDER = "여사랑";
     const blockedWords = ["죽어","병신","멍청","꺼져","씨발","시발","좆","강간","살인"];
     const threatWords = ["죽고 싶","자살","살려줘","폭행","성폭행","학대","스토킹","칼","납치","도와줘"];
 
-    const emotionKeywords = {
-      불안:["불안","무서","떨려","긴장","초조"],
-      슬픔:["슬퍼","눈물","우울","외로","속상"],
-      분노:["화나","짜증","억울","분해"],
-      지침:["지쳐","버겁","무기력","피곤"],
-      위로필요:["위로","안아","포옹","괜찮"],
-      관계:["친구","엄마","가족","학교","회사","사람"]
-    };
+   const emotionPatterns = {
+  불안: [
+    { word: "불안", score: 3 },
+    { word: "초조", score: 3 },
+    { word: "긴장", score: 2 },
+    { word: "조마조마", score: 3 },
+    { word: "무서", score: 2 },
+    { word: "걱정", score: 2 },
+    { word: "떨", score: 2 },
+    { word: "겁", score: 2 },
+    { word: "혼란", score: 2 }
+  ],
+  슬픔: [
+    { word: "슬프", score: 3 },
+    { word: "눈물", score: 3 },
+    { word: "울었", score: 3 },
+    { word: "울고", score: 3 },
+    { word: "외롭", score: 3 },
+    { word: "서럽", score: 3 },
+    { word: "허전", score: 2 },
+    { word: "공허", score: 3 },
+    { word: "속상", score: 2 },
+    { word: "상처", score: 2 }
+  ],
+  분노: [
+    { word: "화나", score: 3 },
+    { word: "짜증", score: 3 },
+    { word: "억울", score: 3 },
+    { word: "분하", score: 3 },
+    { word: "열받", score: 4 },
+    { word: "빡쳐", score: 4 },
+    { word: "답답", score: 2 },
+    { word: "미치겠", score: 2 },
+    { word: "참기 힘들", score: 3 }
+  ],
+  지침: [
+    { word: "지쳐", score: 3 },
+    { word: "피곤", score: 3 },
+    { word: "버겁", score: 3 },
+    { word: "힘들", score: 2 },
+    { word: "무기력", score: 4 },
+    { word: "기운이 없", score: 3 },
+    { word: "지친", score: 3 },
+    { word: "녹초", score: 4 },
+    { word: "소진", score: 4 }
+  ],
+  위로필요: [
+    { word: "위로", score: 3 },
+    { word: "안아", score: 3 },
+    { word: "포옹", score: 3 },
+    { word: "기대고 싶", score: 3 },
+    { word: "괜찮지 않", score: 4 },
+    { word: "버티기 힘들", score: 4 },
+    { word: "누가 좀", score: 2 },
+    { word: "살기 힘들", score: 4 }
+  ],
+  관계: [
+    { word: "친구", score: 2 },
+    { word: "엄마", score: 2 },
+    { word: "아빠", score: 2 },
+    { word: "부모", score: 2 },
+    { word: "가족", score: 2 },
+    { word: "학교", score: 2 },
+    { word: "회사", score: 2 },
+    { word: "선생", score: 2 },
+    { word: "사람", score: 1 },
+    { word: "관계", score: 2 }
+  ],
+  멍함: [
+    { word: "멍", score: 3 },
+    { word: "아무 느낌", score: 4 },
+    { word: "무감각", score: 4 },
+    { word: "텅 빈", score: 3 },
+    { word: "붕 뜬", score: 3 },
+    { word: "실감이 안", score: 3 }
+  ],
+  평온: [
+    { word: "괜찮아졌", score: 3 },
+    { word: "편안", score: 3 },
+    { word: "안정", score: 3 },
+    { word: "차분", score: 3 },
+    { word: "평온", score: 4 },
+    { word: "조금 나아", score: 2 }
+  ]
+};
 
     const home = document.getElementById("home");
     const app = document.getElementById("app");
@@ -975,14 +1052,62 @@ const DONATION_HOLDER = "여사랑";
       return threatWords.some(word => text.includes(word));
     }
 
-    function detectEmotion(text){
-      for(const [label, keywords] of Object.entries(emotionKeywords)){
-        if(keywords.some(word => text.includes(word))){
-          return label;
-        }
+    function normalizeText(text){
+  return text
+    .replace(/\s+/g, " ")
+    .trim()
+    .toLowerCase();
+}
+
+function detectEmotion(text){
+  const normalized = normalizeText(text);
+  const scores = {};
+
+  Object.keys(emotionPatterns).forEach(label => {
+    scores[label] = 0;
+  });
+
+  for(const [label, patterns] of Object.entries(emotionPatterns)){
+    for(const item of patterns){
+      if(normalized.includes(item.word.toLowerCase())){
+        scores[label] += item.score;
       }
-      return "흔들림";
     }
+  }
+
+  // 문장 길이와 강한 표현 보정
+  if(/너무|정말|진짜|엄청|계속|자꾸/.test(normalized)){
+    const currentTop = Object.keys(scores).sort((a, b) => scores[b] - scores[a])[0];
+    if(currentTop) scores[currentTop] += 1;
+  }
+
+  // "안 괜찮아", "괜찮지 않아" 같은 부정형 보정
+  if(/안 괜찮|괜찮지 않|하나도 안 괜찮/.test(normalized)){
+    scores["위로필요"] += 3;
+    scores["평온"] = Math.max(0, scores["평온"] - 3);
+  }
+
+  // "죽고 싶", "사라지고 싶" 류는 위로필요/지침 쪽 강화
+  if(/죽고 싶|사라지고 싶|없어지고 싶/.test(normalized)){
+    scores["위로필요"] += 5;
+    scores["지침"] += 3;
+  }
+
+  const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+  const [topLabel, topScore] = sorted[0];
+  const [, secondScore] = sorted[1] || ["", 0];
+
+  if(topScore === 0){
+    return "말로 다 못한 마음";
+  }
+
+  // 상위 감정이 비슷하게 겹치면 복합감정 처리
+  if(topScore > 0 && secondScore > 0 && topScore - secondScore <= 1){
+    return `${sorted[0][0]} · ${sorted[1][0]}`;
+  }
+
+  return topLabel;
+}
 
     function createEmpathy(text){
       const info = characters[currentCharacter];
@@ -1211,7 +1336,7 @@ function showDonationGuide(){
         who:"me",
         nick:"나",
         text,
-        meta:[`감정: ${emotion}`, `${messageSeq++}번째 기록`]
+      meta:[`자동 감지: ${emotion}`, `${messageSeq++}번째 기록`]
       });
 
       const empathy = createEmpathy(text);
