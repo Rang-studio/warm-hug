@@ -1,14 +1,14 @@
 {
-  "name": "warmhug-private-server",
+  "name": "warmhug-multiuser-service",
   "version": "1.0.0",
-  "description": "Warmhug personal private server",
+  "description": "Warmhug multi-user personal server service",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
-    "cors": "^2.8.5",
+    "better-sqlite3": "^11.7.0",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2"
   }
