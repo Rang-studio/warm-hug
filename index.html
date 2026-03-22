@@ -1502,13 +1502,14 @@ function openHugPopup(hugType){
       }
 
       msgInput.value = "";
-      updateCharCount();
-      setTimeout(scrollBottom, 80);
-     if(currentCharacter === "둥글레차"){
+updateCharCount();
+setTimeout(scrollBottom, 80);
+
+if(currentCharacter === "둥글레차"){
   setTimeout(() => {
     showDunggeulleHugPopup();
   }, 500);
-     }
+}
 
     function clearAllEntries(){
       showModal({
