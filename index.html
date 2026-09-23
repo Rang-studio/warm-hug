@@ -607,7 +607,7 @@
           <div class="note">
             <p class="note-prompt" id="notePrompt">오늘 마음에 남아 있는 걸, 그냥 적어주세요.</p>
             <label for="msg" class="sr-only">마음 적기</label>
-            <textarea id="msg" maxlength="120" rows="4" placeholder="아무렇게나 적어도 괜찮아요."></textarea>
+            <textarea id="msg" maxlength="1000" rows="4" placeholder="아무렇게나 적어도 괜찮아요."></textarea>
             <div class="note-bottom">
               <span class="count"><span id="charCount">0</span> / 120</span>
               <button id="sendBtn" class="tag" type="button">공감 받기</button>
@@ -1691,7 +1691,7 @@ window.ANALYTICS_CONFIG = {
 
   function editEntry(li, e){
     const p = li.querySelector(".j-me"); if(!p) return;
-    const ta = document.createElement("textarea"); ta.className = "j-edit"; ta.maxLength = 120; ta.value = e.text;
+    const ta = document.createElement("textarea"); ta.className = "j-edit"; ta.maxLength = 1000; ta.value = e.text;
     const tools = li.querySelector(".j-tools"); tools.innerHTML = `<button type="button" data-act="save">저장</button><button type="button" data-act="cancel">취소</button>`;
     p.replaceWith(ta); ta.focus();
     tools.querySelector('[data-act="save"]').addEventListener("click", () => {
